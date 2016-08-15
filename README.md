@@ -13,6 +13,11 @@ longitude | Longitude of the location that you want to keep track
 pushbullet_accounts | Array of Pushbullet accounts for receiving notification. Create a [Pushbullet account](https://www.pushbullet.com)
 pushbullet_token | Get one from Pushbullet [Account Settings](https://www.pushbullet.com/#settings/account)
 
+Install required dependencies:
+```
+npm install
+```
+
 Launch the system by:
 ```
 node main.js
