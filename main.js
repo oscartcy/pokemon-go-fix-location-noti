@@ -87,7 +87,7 @@ pokeio.init(username, password, location, provider, function(err) {
 
                                 var pokemonData = pokedex[parseInt(pkm.pokemon.PokemonId)-1];
 
-                                var title = pokemonData.name_hk + ' | Time left (s): ' + pkm.TimeTillHiddenMs / 1000;
+                                var title = pokemonData.name_hk + ' ' + pokemonData.name + ' | Time left (s): ' + pkm.TimeTillHiddenMs / 1000;
                                 var body = getGoogleMapLink(pkm.Latitude, pkm.Longitude);
 
                                 config.pushbullet_accounts.forEach((account) => {
