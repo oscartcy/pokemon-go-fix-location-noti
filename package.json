@@ -1,0 +1,10 @@
+{
+    "name": "pokemon-go-fix-location-noti",
+    "version": "0.0.1",
+    "description": "Pokemon Go Notification system for fixed location",
+    "main": "main.js",
+    "dependencies": {
+    	"pokemon-go-node-api": "git://github.com/oscartcy/Pokemon-GO-node-api.git",
+    	"pushbullet": "~1.4.3"
+    }
+}
