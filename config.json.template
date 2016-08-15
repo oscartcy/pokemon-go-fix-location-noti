@@ -1,7 +1,10 @@
 {
 	"username": "your PoGo username",
 	"password": "your PoGo password",
-	"latitude": 22.318958,
-	"longitude": 114.168599,
-	"pushbullet_token": "your pushbullet token"
+	"latitude": 0,
+	"longitude": 0,
+	"pushbullet_token": "your pushbullet token",
+	"pushbullet_accounts": [
+		"testing@aaaaa.com"
+	]
 }
