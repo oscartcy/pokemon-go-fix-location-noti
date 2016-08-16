@@ -16,13 +16,15 @@ var pokeio = new PokemonGO.Pokeio();
 var coords = {
     'latitude': +config.latitude,
     'longitude': +config.longitude,
-    'altitude': '0'
+    'altitude': 0
 }
 
 var location = {
     type: 'coords',
     coords: coords
 };
+
+console.log(location);
 
 var coordDiff = [
     [0, 0],
@@ -64,7 +66,19 @@ pokeio.init(username, password, location, provider, function(err) {
         setInterval(function(){
             pokeio.Heartbeat(function(err,hb) {
                 if(err) {
-                    console.log(err);
+                    console.error(err);
+
+                    if(err === 'No result') {
+                        console.log('Token expired, try to refresh');
+
+                        pokeio.init(username, password, location, provider, (err) => {
+                            if(err) console.error(err);
+
+                            console.log('Refresh token complete');
+                        });
+                    }
+
+                    return;
                 }
 
                 if(!hb || !hb.cells) {
@@ -109,14 +123,13 @@ pokeio.init(username, password, location, provider, function(err) {
                 var newCoords = {
                     'latitude': coords.latitude + coordDiff[0][0],
                     'longitude': coords.longitude + coordDiff[0][1],
-                    'altitude': '0'
+                    'altitude': 0
                 };
 
                 location.coords = newCoords;
 
                 pokeio.SetLocation(location, (err, coords) => {
-                    if(err)
-                        console.error(err);
+                    if(err) console.error(err);
                 });
 
                 // rotate coordDiff
