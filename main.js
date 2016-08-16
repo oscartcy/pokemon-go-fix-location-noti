@@ -3,6 +3,7 @@
 var PokemonGO = require('pokemon-go-node-api');
 var pokedex = require('./pokedex_hk.json').pokemon;
 var PushBullet = require('pushbullet');
+var Long = require('long');
 
 var config = require('./config.json');
 
@@ -35,6 +36,8 @@ var coordDiff = [
 var spawnMap = {};
 var spawnList = [];
 var recycleLength = 100;
+
+var lureStopMap = {};
 
 var username = config.username;
 var password = config.password;
@@ -97,21 +100,50 @@ pokeio.init(username, password, location, provider, function(err) {
                                 if(spawnList.length > recycleLength)
                                     recycleSpawnMap();
 
-                                var pokemonData = pokedex[parseInt(pkm.pokemon.PokemonId)-1];
-
-                                var title = pokemonData.name_hk + ' ' + pokemonData.name + ' ' + msToMMSS(pkm.TimeTillHiddenMs);
-                                var body = getGoogleMapLink(pkm.Latitude, pkm.Longitude);
-
-                                config.pushbullet_accounts.forEach((account) => {
-                                    pusher.note(account, title, body, (err, res) => {
-                                        if(err)
-                                            console.error(err);
-                                    });
+                                publishNotification({
+                                    pokemonId: pkm.pokemon.PokemonId,
+                                    latitude: pkm.Latitude,
+                                    longitude: pkm.Longitude,
+                                    timeTillHiddenMs: pkm.TimeTillHiddenMs
                                 });
+                            }
+                        });
+                    }
 
-                                console.log((new Date()).toString());
-                                console.log('>>>' + title);
-                                console.log(body);
+                    // for lured pokemons
+                    if(cell.Fort[0]) {
+                        // console.log(cell.Fort);
+
+                        cell.Fort.forEach((fort) => {
+                            if(fort.LureInfo) {
+                                var lureInfo = fort.LureInfo;
+                                // console.log(fort.LureInfo);
+
+                                var fortId = lureInfo.FortId;
+                                var lureExpiresTimestampMs = +lureInfo.LureExpiresTimestampMs.toString();
+                                var pokemonId = lureInfo.ActivePokemonId;
+                                var latitude = fort.Latitude;
+                                var longitude = fort.Longitude;
+
+                                if(lureStopMap[fortId] && lureStopMap[fortId] === lureExpiresTimestampMs) {
+                                    // skip reported pokemon
+                                    // console.log('skip reported pokemon')
+                                    return;
+                                } else {
+                                    // console.log('lureStopMap:' + lureStopMap);
+                                    // console.log('fortId:' + fortId);
+                                    // console.log('lureExpiresTimestampMs:' + lureExpiresTimestampMs);
+                                    // update the map
+                                    lureStopMap[fortId] = lureExpiresTimestampMs;
+
+                                    publishNotification({
+                                        pokemonId: pokemonId,
+                                        latitude: latitude,
+                                        longitude: longitude,
+                                        timeTillHiddenMs: lureExpiresTimestampMs - new Date().getTime(),
+                                        spawnType: 'LURE'
+                                    });
+                                }
                             }
                         });
                     }
@@ -138,6 +170,28 @@ pokeio.init(username, password, location, provider, function(err) {
 
     });
 });
+
+function publishNotification(params) {
+    var pokemonData = pokedex[parseInt(params.pokemonId)-1];
+
+    var lureFlag = '';
+    if(params.spawnType && params.spawnType === 'LURE')
+        lureFlag = '*';
+
+    var title = lureFlag + pokemonData.name_hk + ' ' + pokemonData.name + ' ' + msToMMSS(params.timeTillHiddenMs);
+    var body = getGoogleMapLink(params.latitude, params.longitude);
+
+    config.pushbullet_accounts.forEach((account) => {
+        pusher.note(account, title, body, (err, res) => {
+            if(err)
+                console.error(err);
+        });
+    });
+
+    console.log((new Date()).toString());
+    console.log('>>>' + title);
+    console.log(body);
+}
 
 function getGoogleMapLink(lat, lon) {
     var ll = lat + ',' + lon;
