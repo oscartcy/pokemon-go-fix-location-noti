@@ -24,8 +24,6 @@ var location = {
     coords: coords
 };
 
-console.log(location);
-
 var coordDiff = [
     [0, 0],
     [0.000300, 0],
@@ -101,7 +99,7 @@ pokeio.init(username, password, location, provider, function(err) {
 
                                 var pokemonData = pokedex[parseInt(pkm.pokemon.PokemonId)-1];
 
-                                var title = pokemonData.name_hk + ' ' + pokemonData.name + ' | Time left (s): ' + pkm.TimeTillHiddenMs / 1000;
+                                var title = pokemonData.name_hk + ' ' + pokemonData.name + ' ' + msToMMSS(pkm.TimeTillHiddenMs);
                                 var body = getGoogleMapLink(pkm.Latitude, pkm.Longitude);
 
                                 config.pushbullet_accounts.forEach((account) => {
@@ -112,7 +110,7 @@ pokeio.init(username, password, location, provider, function(err) {
                                 });
 
                                 console.log((new Date()).toString());
-                                console.log(title);
+                                console.log('>>>' + title);
                                 console.log(body);
                             }
                         });
@@ -153,4 +151,8 @@ function recycleSpawnMap() {
     }
     console.log('Recycle complete, count: ' + i);
     console.log('spawnList size: ' + spawnList.length);
+}
+
+function msToMMSS(ms) {
+    return new Date(ms).toTimeString().substring(3, 8);
 }
