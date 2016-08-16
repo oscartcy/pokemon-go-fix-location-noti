@@ -10,6 +10,10 @@ var config = require('./config.json');
 if(!config.username || !config.password || !config.latitude || !config.longitude || !config.pushbullet_token || !config.pushbullet_accounts)
     throw new Error('Missing config. Please check config.json.');
 
+var doNotNotify = [];
+if(Array.isArray(config.do_not_notify))
+    doNotNotify = config.do_not_notify;
+
 var pusher = new PushBullet(config.pushbullet_token);
 
 var pokeio = new PokemonGO.Pokeio();
@@ -173,6 +177,22 @@ pokeio.init(username, password, location, provider, function(err) {
 
 function publishNotification(params) {
     var pokemonData = pokedex[parseInt(params.pokemonId)-1];
+
+    // check do_not_notify list
+    var query = pokemonData.name.toLowerCase();
+    var index = -1;
+    doNotNotify.some(function(element, i) {
+        if (query === element.toLowerCase()) {
+            index = i;
+            return true;
+        }
+    });
+
+    // skip publish notification
+    if(index !== -1) {
+        console.log('Skipped ' + pokemonData.name);
+        return;
+    }
 
     var lureFlag = '';
     if(params.spawnType && params.spawnType === 'LURE')

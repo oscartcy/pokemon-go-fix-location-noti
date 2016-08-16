@@ -6,5 +6,8 @@
 	"pushbullet_token": "your pushbullet token",
 	"pushbullet_accounts": [
 		"testing@aaaaa.com"
+	],
+	"do_not_notify": [
+		"zubat"
 	]
 }
