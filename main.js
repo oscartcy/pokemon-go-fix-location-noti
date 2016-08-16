@@ -73,15 +73,13 @@ pokeio.init(username, password, location, provider, function(err) {
                 if(err) {
                     console.error(err);
 
-                    if(err === 'No result') {
-                        console.log('Token expired, try to refresh');
+                    console.log('Token expired / error occurs, try to refresh');
 
-                        pokeio.init(username, password, location, provider, (err) => {
-                            if(err) console.error(err);
+                    pokeio.init(username, password, location, provider, (err) => {
+                        if(err) console.error(err);
 
-                            console.log('Refresh token complete');
-                        });
-                    }
+                        console.log('Refresh token complete');
+                    });
 
                     return;
                 }
