@@ -3,11 +3,18 @@
 	"password": "your PoGo password",
 	"latitude": 0,
 	"longitude": 0,
-	"pushbullet_token": "your pushbullet token",
-	"pushbullet_accounts": [
-		"testing@aaaaa.com"
-	],
 	"do_not_notify": [
 		"zubat"
-	]
+	],
+	"notification_providers": {
+		"pushbullet": {
+			"token": "your token",
+			"deviceParams": "your pushbullet email"
+		},
+		"hipchat": {
+			"token": "your token",
+			"roomid": "room ID",
+			"endpoint": "https://somewhat.hipchat.com"
+		}
+	}
 }

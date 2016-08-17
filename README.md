@@ -10,9 +10,28 @@ username | Your Pokemon Go login username (only support google login at this mom
 password | Your Pokeon Go login password
 latitude | Latitude of the location that you want to keep track
 longitude | Longitude of the location that you want to keep track
-pushbullet_token | Get one from Pushbullet [Account Settings](https://www.pushbullet.com/#settings/account)
-pushbullet_accounts | Array of Pushbullet accounts for receiving notification. Create a [Pushbullet account](https://www.pushbullet.com)
 do_not_notify | Array of Pokemon names in English which skip notifying user
+notification_providers | { "provider": "options" }
+
+## Notification Providers
+### Pushbullet
+Create a [Pushbullet account](https://www.pushbullet.com)
+
+Options:
+
+Field | Description
+--- | ---
+token | Get one from Pushbullet [Account Settings](https://www.pushbullet.com/#settings/account)
+deviceParams | Your pushbullet account email address, or target patameters defined [here](https://docs.pushbullet.com/#create-push)
+
+### Hipchat
+Options:
+
+Field | Description
+--- | ---
+token | Obtain Hipchat [personal access token](https://www.hipchat.com/account/api)
+roomid | your room id, can be found on the path when you enter the room
+endpoint | Hipchat endpoint
 
 Install required dependencies:
 ```

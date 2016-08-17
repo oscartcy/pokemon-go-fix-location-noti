@@ -4,17 +4,21 @@ var PokemonGO = require('pokemon-go-node-api');
 var pokedex = require('./pokedex_hk.json').pokemon;
 var PushBullet = require('pushbullet');
 var Long = require('long');
+var request = require('request');
 
 var config = require('./config.json');
 
-if(!config.username || !config.password || !config.latitude || !config.longitude || !config.pushbullet_token || !config.pushbullet_accounts)
+if(!config.username || !config.password || !config.latitude || !config.longitude)
     throw new Error('Missing config. Please check config.json.');
 
 var doNotNotify = [];
 if(Array.isArray(config.do_not_notify))
     doNotNotify = config.do_not_notify;
 
-var pusher = new PushBullet(config.pushbullet_token);
+var notification_providers = config.notification_providers;
+var pusher;
+if(notification_providers && notification_providers.pushbullet && notification_providers.pushbullet.token)
+    pusher = new PushBullet(notification_providers.pushbullet.token);
 
 var pokeio = new PokemonGO.Pokeio();
 
@@ -22,7 +26,7 @@ var coords = {
     'latitude': +config.latitude,
     'longitude': +config.longitude,
     'altitude': 0
-}
+};
 
 var location = {
     type: 'coords',
@@ -242,12 +246,40 @@ function publishNotification(params) {
     var title = lureFlag + pokemonData.name_hk + ' ' + pokemonData.name + ' ' + msToMMSS(params.timeTillHiddenMs);
     var body = getGoogleMapLink(params.latitude, params.longitude);
 
-    config.pushbullet_accounts.forEach((account) => {
-        pusher.note(account, title, body, (err, res) => {
+    // TODO: support multiple providers
+
+    // for pushbullet
+    if(pusher) {
+        pusher.note(notification_providers.pushbullet.deviceParams, title, body, (err, res) => {
             if(err)
                 console.error(err);
         });
-    });
+    }
+
+    // for hipchat
+    if(notification_providers.hipchat) {
+        var hipchat = notification_providers.hipchat;
+        var endpoint = hipchat.endpoint + '/v2/room/' + hipchat.roomid + '/notification';
+
+        var options = {
+            'url': endpoint,
+            'method': "POST",
+            'auth': {
+                'bearer': hipchat.token
+            },
+            'json': {
+                "from": "PoGo Notification",
+                "message": "<b>" + title + '</b>  <a href="' + body + '">[ M ]</a>',
+                "color": "yellow",
+                "notify": false
+            }
+        };
+
+        request(options, (err) => {
+            if(err)
+                console.error(err);
+        });
+    }
 
     console.log((new Date()).toString());
     console.log('>>>' + title);
