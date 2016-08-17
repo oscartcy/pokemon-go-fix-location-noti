@@ -77,13 +77,18 @@ pokeio.init(username, password, location, provider, function(err) {
         console.log('1[i] Stardust: ' + profile.currency[1].amount);
 
         setInterval(function(){
+            if(isHandlingError) {
+                console.log('Handling error...');
+                return;
+            }
+
             pokeio.Heartbeat(function(err,hb) {
                 if(err) {
                     handleHeartbeatError(err);
                     return;
                 }
 
-                if(!hb || !hb.cells || isHandlingError) {
+                if(!hb || !hb.cells) {
                     return;
                 }
 
@@ -114,28 +119,21 @@ function handleHeartbeatError(err) {
     isHandlingError = true;
     loginRetryCount++;
 
-    pokeio.playerInfo = {
-        accessToken: '',
-        debug: true,
-        latitude: 0,
-        longitude: 0,
-        altitude: 0,
-        locationName: '',
-        provider: '',
-        apiEndpoint: ''
-    };
+    console.log('Wait a while before refreshing token...');
 
-    console.log('Try to refresh token... ' + loginRetryCount);
+    setTimeout(() => {
+        console.log('Try to refresh token... ' + loginRetryCount);
 
-    pokeio.init(username, password, location, provider, (err) => {
-        if(err) {
-            console.error('Refresh token error: ' + err);
-        } else {
-            console.log('Refresh token complete');
-        }
+        pokeio.init(username, password, location, provider, (err) => {
+            if(err) {
+                console.error('Refresh token error: ' + err);
+            } else {
+                console.log('Refresh token complete');
+            }
 
-        isHandlingError = false;
-    });
+            isHandlingError = false;
+        });
+    }, 5000);
 }
 
 function handleHeartbeatCell(cell) {
