@@ -43,6 +43,10 @@ var recycleLength = 100;
 
 var lureStopMap = {};
 
+var isHandlingError = false;
+var loginRetryLimit = 5;
+var loginRetryCount = 0;
+
 var username = config.username;
 var password = config.password;
 var provider = 'google';
@@ -71,107 +75,146 @@ pokeio.init(username, password, location, provider, function(err) {
         setInterval(function(){
             pokeio.Heartbeat(function(err,hb) {
                 if(err) {
-                    console.error(err);
-
-                    console.log('Token expired / error occurs, try to refresh');
-
-                    pokeio.init(username, password, location, provider, (err) => {
-                        if(err) console.error(err);
-
-                        console.log('Refresh token complete');
-                    });
-
+                    handleHeartbeatError(err);
                     return;
                 }
 
-                if(!hb || !hb.cells) {
+                if(!hb || !hb.cells || isHandlingError) {
                     return;
                 }
 
-                hb.cells.forEach((cell) => {
-                    if(cell.WildPokemon[0]) {
-                        // console.log(cell.WildPokemon);
-                        cell.WildPokemon.forEach((pkm) => {
-                            var SpawnPointId = pkm.SpawnPointId;
+                loginRetryCount = 0;
 
-                            // if pkm not exist in map
-                            if(!spawnMap.hasOwnProperty(SpawnPointId)) {
-                                spawnMap[SpawnPointId] = pkm;
-                                spawnList.push(SpawnPointId);
-
-                                if(spawnList.length > recycleLength)
-                                    recycleSpawnMap();
-
-                                publishNotification({
-                                    pokemonId: pkm.pokemon.PokemonId,
-                                    latitude: pkm.Latitude,
-                                    longitude: pkm.Longitude,
-                                    timeTillHiddenMs: pkm.TimeTillHiddenMs
-                                });
-                            }
-                        });
-                    }
-
-                    // for lured pokemons
-                    if(cell.Fort[0]) {
-                        // console.log(cell.Fort);
-
-                        cell.Fort.forEach((fort) => {
-                            if(fort.LureInfo) {
-                                var lureInfo = fort.LureInfo;
-                                // console.log(fort.LureInfo);
-
-                                var fortId = lureInfo.FortId;
-                                var lureExpiresTimestampMs = +lureInfo.LureExpiresTimestampMs.toString();
-                                var pokemonId = lureInfo.ActivePokemonId;
-                                var latitude = fort.Latitude;
-                                var longitude = fort.Longitude;
-
-                                if(lureStopMap[fortId] && lureStopMap[fortId] === lureExpiresTimestampMs) {
-                                    // skip reported pokemon
-                                    // console.log('skip reported pokemon')
-                                    return;
-                                } else {
-                                    // console.log('lureStopMap:' + lureStopMap);
-                                    // console.log('fortId:' + fortId);
-                                    // console.log('lureExpiresTimestampMs:' + lureExpiresTimestampMs);
-                                    // update the map
-                                    lureStopMap[fortId] = lureExpiresTimestampMs;
-
-                                    publishNotification({
-                                        pokemonId: pokemonId,
-                                        latitude: latitude,
-                                        longitude: longitude,
-                                        timeTillHiddenMs: lureExpiresTimestampMs - new Date().getTime(),
-                                        spawnType: 'LURE'
-                                    });
-                                }
-                            }
-                        });
-                    }
-                });
+                // digest each heartbeat cell
+                hb.cells.forEach(handleHeartbeatCell);
 
                 // move to next coord for searching
-                var newCoords = {
-                    'latitude': coords.latitude + coordDiff[0][0],
-                    'longitude': coords.longitude + coordDiff[0][1],
-                    'altitude': 0
-                };
-
-                location.coords = newCoords;
-
-                pokeio.SetLocation(location, (err, coords) => {
-                    if(err) console.error(err);
-                });
-
-                // rotate coordDiff
-                var shifted = coordDiff.shift();
-                coordDiff.push(shifted);
+                walkToNextLocation();
             });
         }, 5000);
 
     });
 });
+
+function handleHeartbeatError(err) {
+    console.error(err);
+
+    if(isHandlingError) {
+        console.log('Handling error');
+        return;
+    }
+
+    if(loginRetryCount > loginRetryLimit)
+        throw new Error('Reach login retry limit!');
+
+    isHandlingError = true;
+    loginRetryCount++;
+
+    pokeio.playerInfo = {
+        accessToken: '',
+        debug: true,
+        latitude: 0,
+        longitude: 0,
+        altitude: 0,
+        locationName: '',
+        provider: '',
+        apiEndpoint: ''
+    };
+
+    console.log('Try to refresh token... ' + loginRetryCount);
+
+    pokeio.init(username, password, location, provider, (err) => {
+        if(err) {
+            console.error('Refresh token error: ' + err);
+        } else {
+            console.log('Refresh token complete');
+        }
+
+        isHandlingError = false;
+    });
+}
+
+function handleHeartbeatCell(cell) {
+    // for wild pokemon
+    if(cell.WildPokemon[0]) {
+        // console.log(cell.WildPokemon);
+        cell.WildPokemon.forEach((pkm) => {
+            var SpawnPointId = pkm.SpawnPointId;
+
+            // if pkm not exist in map
+            if(!spawnMap.hasOwnProperty(SpawnPointId)) {
+                spawnMap[SpawnPointId] = pkm;
+                spawnList.push(SpawnPointId);
+
+                if(spawnList.length > recycleLength)
+                    recycleSpawnMap();
+
+                publishNotification({
+                    pokemonId: pkm.pokemon.PokemonId,
+                    latitude: pkm.Latitude,
+                    longitude: pkm.Longitude,
+                    timeTillHiddenMs: pkm.TimeTillHiddenMs
+                });
+            }
+        });
+    }
+
+    // for lured pokemons
+    if(cell.Fort[0]) {
+        // console.log(cell.Fort);
+
+        cell.Fort.forEach((fort) => {
+            if(fort.LureInfo) {
+                var lureInfo = fort.LureInfo;
+                // console.log(fort.LureInfo);
+
+                var fortId = lureInfo.FortId;
+                var lureExpiresTimestampMs = +lureInfo.LureExpiresTimestampMs.toString();
+                var pokemonId = lureInfo.ActivePokemonId;
+                var latitude = fort.Latitude;
+                var longitude = fort.Longitude;
+
+                if(lureStopMap[fortId] && lureStopMap[fortId] === lureExpiresTimestampMs) {
+                    // skip reported pokemon
+                    // console.log('skip reported pokemon')
+                    return;
+                } else {
+                    // console.log('lureStopMap:' + lureStopMap);
+                    // console.log('fortId:' + fortId);
+                    // console.log('lureExpiresTimestampMs:' + lureExpiresTimestampMs);
+                    // update the map
+                    lureStopMap[fortId] = lureExpiresTimestampMs;
+
+                    publishNotification({
+                        pokemonId: pokemonId,
+                        latitude: latitude,
+                        longitude: longitude,
+                        timeTillHiddenMs: lureExpiresTimestampMs - new Date().getTime(),
+                        spawnType: 'LURE'
+                    });
+                }
+            }
+        });
+    }
+}
+
+function walkToNextLocation() {
+    var newCoords = {
+        'latitude': coords.latitude + coordDiff[0][0],
+        'longitude': coords.longitude + coordDiff[0][1],
+        'altitude': 0
+    };
+
+    location.coords = newCoords;
+
+    pokeio.SetLocation(location, (err, coords) => {
+        if(err) console.error(err);
+    });
+
+    // rotate coordDiff
+    var shifted = coordDiff.shift();
+    coordDiff.push(shifted);
+}
 
 function publishNotification(params) {
     var pokemonData = pokedex[parseInt(params.pokemonId)-1];
