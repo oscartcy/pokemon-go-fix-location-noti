@@ -12,8 +12,9 @@ Create `config.json` by cloning `config.json.template`
 
 Field | Description
 --- | ---
-username | Your Pokemon Go login username (only support google login at this moment)
+username | Your Pokemon Go login username
 password | Your Pokeon Go login password
+provider | google / ptc (Pokemon trainer club)
 latitude | Latitude of the location that you want to keep track
 longitude | Longitude of the location that you want to keep track
 do_not_notify | Array of Pokemon names in English which skip notifying user
