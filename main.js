@@ -8,7 +8,7 @@ var request = require('request');
 
 var config = require('./config.json');
 
-if(!config.username || !config.password || !config.latitude || !config.longitude)
+if(!config.username || !config.password || !config.provider || !config.latitude || !config.longitude)
     throw new Error('Missing config. Please check config.json.');
 
 var doNotNotify = [];
@@ -48,15 +48,18 @@ var recycleLength = 100;
 var lureStopMap = {};
 
 var isHandlingError = false;
-var loginRetryLimit = 5;
+var loginRetryLimit = 1;
 var loginRetryCount = 0;
+var sleepBeforeRefresh = 10000;
 
 var username = config.username;
 var password = config.password;
-var provider = 'google';
+var provider = config.provider;
 
 pokeio.init(username, password, location, provider, function(err) {
     if (err) throw err;
+
+    console.log('token: ' + pokeio.playerInfo.accessToken);
 
     console.log('1[i] Current location: ' + pokeio.playerInfo.locationName);
     console.log('1[i] lat/long/alt: : ' + pokeio.playerInfo.latitude + ' ' + pokeio.playerInfo.longitude + ' ' + pokeio.playerInfo.altitude);
@@ -113,7 +116,7 @@ function handleHeartbeatError(err) {
         return;
     }
 
-    if(loginRetryCount > loginRetryLimit)
+    if(loginRetryCount >= loginRetryLimit)
         throw new Error('Reach login retry limit!');
 
     isHandlingError = true;
@@ -129,11 +132,12 @@ function handleHeartbeatError(err) {
                 console.error('Refresh token error: ' + err);
             } else {
                 console.log('Refresh token complete');
+                console.log('token: ' + pokeio.playerInfo.accessToken);
             }
 
             isHandlingError = false;
         });
-    }, 5000);
+    }, sleepBeforeRefresh);
 }
 
 function handleHeartbeatCell(cell) {

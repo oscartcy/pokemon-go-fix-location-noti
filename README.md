@@ -48,9 +48,14 @@ Install required dependencies:
 npm install
 ```
 
+Install forever
+```
+npm install forever -g
+```
+
 Launch the system by:
 ```
-node main.js
+forever main.js
 ```
 
 ## Screenshot
