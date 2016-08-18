@@ -5,6 +5,7 @@ Leisure project for tracking fixed location pokemons, best suit for Pokemon trai
 * Support searching pokemons nearby (so you can stay at home and Catch 'Em All)
 * Support pokemons from lure module
 * Support pushbullet and hipchat integration
+* Support notification by pokemon tier
 * Support Hong Kong version pokemon names
 
 ## Setup

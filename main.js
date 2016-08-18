@@ -2,6 +2,7 @@
 
 var PokemonGO = require('pokemon-go-node-api');
 var pokedex = require('./pokedex_hk.json').pokemon;
+var pokemon_tier = require('./pokemon_tier.json');
 var PushBullet = require('pushbullet');
 var Long = require('long');
 var request = require('request');
@@ -59,7 +60,7 @@ var provider = config.provider;
 pokeio.init(username, password, location, provider, function(err) {
     if (err) throw err;
 
-    console.log('token: ' + pokeio.playerInfo.accessToken);
+    // console.log('token: ' + pokeio.playerInfo.accessToken);
 
     console.log('1[i] Current location: ' + pokeio.playerInfo.locationName);
     console.log('1[i] lat/long/alt: : ' + pokeio.playerInfo.latitude + ' ' + pokeio.playerInfo.longitude + ' ' + pokeio.playerInfo.altitude);
@@ -245,7 +246,10 @@ function publishNotification(params) {
     if(params.spawnType && params.spawnType === 'LURE')
         lureFlag = '*';
 
-    var title = lureFlag + pokemonData.name_hk + ' ' + pokemonData.name + ' ' + msToMMSS(params.timeTillHiddenMs);
+    var tier = pokemon_tier.pokemon[parseInt(params.pokemonId) - 1].tier;
+    var tier_displayname = pokemon_tier.tier_displayname[tier];
+
+    var title = tier_displayname + ' ' + lureFlag + pokemonData.name_hk + ' ' + pokemonData.name + ' ' + msToMMSS(params.timeTillHiddenMs);
     var body = getGoogleMapLink(params.latitude, params.longitude);
 
     // TODO: support multiple providers
@@ -259,9 +263,22 @@ function publishNotification(params) {
     }
 
     // for hipchat
-    if(notification_providers.hipchat) {
+    if(notification_providers.hipchat && tier < 6) {
         var hipchat = notification_providers.hipchat;
         var endpoint = hipchat.endpoint + '/v2/room/' + hipchat.roomid + '/notification';
+
+        var color = 'gray';
+        var mention = '';
+
+        // change noti by tier
+        if(tier <= 4)
+            color = 'yellow';
+        if(tier <= 3)
+            mention = '@all';
+        if(tier <= 2)
+            color = 'red';
+
+        var message = title + ' ' + body + ' ' + mention;
 
         var options = {
             'url': endpoint,
@@ -271,9 +288,10 @@ function publishNotification(params) {
             },
             'json': {
                 "from": "PoGo Notification",
-                "message": "<b>" + title + '</b>  <a href="' + body + '">[ M ]</a>',
-                "color": "yellow",
-                "notify": false
+                "message_format": "text",
+                "message": message,
+                "color": color,
+                "notify": true
             }
         };
 

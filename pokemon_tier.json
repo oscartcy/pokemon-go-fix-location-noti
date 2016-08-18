@@ -1,0 +1,919 @@
+{
+  "tier_displayname": [
+    "Legendary",
+    "S-Tier",
+    "A-Tier",
+    "B-Tier",
+    "C-Tier",
+    "D-Tier",
+    "E-Tier"
+  ],
+  "pokemon": [
+    {
+      "id": 1,
+      "name": "Bulbasaur",
+      "name_hk": "奇異種子",
+      "tier": 4
+    },
+    {
+      "id": 2,
+      "name": "Ivysaur",
+      "name_hk": "奇異草",
+      "tier": 4
+    },
+    {
+      "id": 3,
+      "name": "Venusaur",
+      "name_hk": "奇異花",
+      "tier": 1
+    },
+    {
+      "id": 4,
+      "name": "Charmander",
+      "name_hk": "小火龍",
+      "tier": 4
+    },
+    {
+      "id": 5,
+      "name": "Charmeleon",
+      "name_hk": "火恐龍",
+      "tier": 4
+    },
+    {
+      "id": 6,
+      "name": "Charizard",
+      "name_hk": "噴火龍",
+      "tier": 1
+    },
+    {
+      "id": 7,
+      "name": "Squirtle",
+      "name_hk": "車厘龜",
+      "tier": 4
+    },
+    {
+      "id": 8,
+      "name": "Wartortle",
+      "name_hk": "卡美龜",
+      "tier": 4
+    },
+    {
+      "id": 9,
+      "name": "Blastoise",
+      "name_hk": "水箭龜",
+      "tier": 1
+    },
+    {
+      "id": 10,
+      "name": "Caterpie",
+      "name_hk": "綠毛蟲",
+      "tier": 6
+    },
+    {
+      "id": 11,
+      "name": "Metapod",
+      "name_hk": "鐵甲蟲",
+      "tier": 6
+    },
+    {
+      "id": 12,
+      "name": "Butterfree",
+      "name_hk": "巴他蝶",
+      "tier": 4
+    },
+    {
+      "id": 13,
+      "name": "Weedle",
+      "name_hk": "獨角蟲",
+      "tier": 6
+    },
+    {
+      "id": 14,
+      "name": "Kakuna",
+      "name_hk": "鐵殼蛹",
+      "tier": 6
+    },
+    {
+      "id": 15,
+      "name": "Beedrill",
+      "name_hk": "大針蜂",
+      "tier": 4
+    },
+    {
+      "id": 16,
+      "name": "Pidgey",
+      "name_hk": "波波",
+      "tier": 6
+    },
+    {
+      "id": 17,
+      "name": "Pidgeotto",
+      "name_hk": "比比鳥",
+      "tier": 4
+    },
+    {
+      "id": 18,
+      "name": "Pidgeot",
+      "name_hk": "大比鳥",
+      "tier": 3
+    },
+    {
+      "id": 19,
+      "name": "Rattata",
+      "name_hk": "小哥達",
+      "tier": 6
+    },
+    {
+      "id": 20,
+      "name": "Raticate",
+      "name_hk": "哥達",
+      "tier": 4
+    },
+    {
+      "id": 21,
+      "name": "Spearow",
+      "name_hk": "鬼雀",
+      "tier": 6
+    },
+    {
+      "id": 22,
+      "name": "Fearow",
+      "name_hk": "魔雀",
+      "tier": 4
+    },
+    {
+      "id": 23,
+      "name": "Ekans",
+      "name_hk": "阿柏蛇",
+      "tier": 6
+    },
+    {
+      "id": 24,
+      "name": "Arbok",
+      "name_hk": "阿柏怪",
+      "tier": 3
+    },
+    {
+      "id": 25,
+      "name": "Pikachu",
+      "name_hk": "比卡超",
+      "tier": 5
+    },
+    {
+      "id": 26,
+      "name": "Raichu",
+      "name_hk": "雷超",
+      "tier": 2
+    },
+    {
+      "id": 27,
+      "name": "Sandshrew",
+      "name_hk": "穿山鼠",
+      "tier": 6
+    },
+    {
+      "id": 28,
+      "name": "Sandslash",
+      "name_hk": "穿山王",
+      "tier": 3
+    },
+    {
+      "id": 29,
+      "name": "Nidoran ♀ (Female)",
+      "name_hk": "尼美蘭",
+      "tier": 6
+    },
+    {
+      "id": 30,
+      "name": "Nidorina",
+      "name_hk": "尼美羅",
+      "tier": 4
+    },
+    {
+      "id": 31,
+      "name": "Nidoqueen",
+      "name_hk": "尼美后",
+      "tier": 2
+    },
+    {
+      "id": 32,
+      "name": "Nidoran ♂ (Male)",
+      "name_hk": "尼多郎",
+      "tier": 6
+    },
+    {
+      "id": 33,
+      "name": "Nidorino",
+      "name_hk": "尼多利",
+      "tier": 4
+    },
+    {
+      "id": 34,
+      "name": "Nidoking",
+      "name_hk": "尼多王",
+      "tier": 2
+    },
+    {
+      "id": 35,
+      "name": "Clefairy",
+      "name_hk": "皮皮",
+      "tier": 4
+    },
+    {
+      "id": 36,
+      "name": "Clefable",
+      "name_hk": "皮可斯",
+      "tier": 3
+    },
+    {
+      "id": 37,
+      "name": "Vulpix",
+      "name_hk": "六尾",
+      "tier": 5
+    },
+    {
+      "id": 38,
+      "name": "Ninetales",
+      "name_hk": "九尾",
+      "tier": 2
+    },
+    {
+      "id": 39,
+      "name": "Jigglypuff",
+      "name_hk": "波波球",
+      "tier": 5
+    },
+    {
+      "id": 40,
+      "name": "Wigglytuff",
+      "name_hk": "肥波球",
+      "tier": 2
+    },
+    {
+      "id": 41,
+      "name": "Zubat",
+      "name_hk": "波音蝠",
+      "tier": 6
+    },
+    {
+      "id": 42,
+      "name": "Golbat",
+      "name_hk": "大口蝠",
+      "tier": 4
+    },
+    {
+      "id": 43,
+      "name": "Oddish",
+      "name_hk": "行路草",
+      "tier": 4
+    },
+    {
+      "id": 44,
+      "name": "Gloom",
+      "name_hk": "怪味花",
+      "tier": 4
+    },
+    {
+      "id": 45,
+      "name": "Vileplume",
+      "name_hk": "霸王花",
+      "tier": 2
+    },
+    {
+      "id": 46,
+      "name": "Paras",
+      "name_hk": "蘑菇蟲",
+      "tier": 6
+    },
+    {
+      "id": 47,
+      "name": "Parasect",
+      "name_hk": "巨菇蟲",
+      "tier": 3
+    },
+    {
+      "id": 48,
+      "name": "Venonat",
+      "name_hk": "毛毛蟲",
+      "tier": 4
+    },
+    {
+      "id": 49,
+      "name": "Venomoth",
+      "name_hk": "魔魯風",
+      "tier": 3
+    },
+    {
+      "id": 50,
+      "name": "Diglett",
+      "name_hk": "地鼠",
+      "tier": 5
+    },
+    {
+      "id": 51,
+      "name": "Dugtrio",
+      "name_hk": "三頭地鼠",
+      "tier": 4
+    },
+    {
+      "id": 52,
+      "name": "Meowth",
+      "name_hk": "喵喵怪",
+      "tier": 5
+    },
+    {
+      "id": 53,
+      "name": "Persian",
+      "name_hk": "高竇貓",
+      "tier": 4
+    },
+    {
+      "id": 54,
+      "name": "Psyduck",
+      "name_hk": "傻鴨",
+      "tier": 4
+    },
+    {
+      "id": 55,
+      "name": "Golduck",
+      "name_hk": "高超鴨",
+      "tier": 3
+    },
+    {
+      "id": 56,
+      "name": "Mankey",
+      "name_hk": "猴怪",
+      "tier": 5
+    },
+    {
+      "id": 57,
+      "name": "Primeape",
+      "name_hk": "火爆猴",
+      "tier": 3
+    },
+    {
+      "id": 58,
+      "name": "Growlithe",
+      "name_hk": "護主犬",
+      "tier": 4
+    },
+    {
+      "id": 59,
+      "name": "Arcanine",
+      "name_hk": "奉神犬",
+      "tier": 1
+    },
+    {
+      "id": 60,
+      "name": "Poliwag",
+      "name_hk": "蚊香蝌蚪",
+      "tier": 5
+    },
+    {
+      "id": 61,
+      "name": "Poliwhirl",
+      "name_hk": "蚊香蛙",
+      "tier": 4
+    },
+    {
+      "id": 62,
+      "name": "Poliwrath",
+      "name_hk": "大力蛙",
+      "tier": 2
+    },
+    {
+      "id": 63,
+      "name": "Abra",
+      "name_hk": "卡斯",
+      "tier": 5
+    },
+    {
+      "id": 64,
+      "name": "Kadabra",
+      "name_hk": "尤基納",
+      "tier": 4
+    },
+    {
+      "id": 65,
+      "name": "Alakazam",
+      "name_hk": "富迪",
+      "tier": 2
+    },
+    {
+      "id": 66,
+      "name": "Machop",
+      "name_hk": "鐵腕",
+      "tier": 4
+    },
+    {
+      "id": 67,
+      "name": "Machoke",
+      "name_hk": "大力",
+      "tier": 3
+    },
+    {
+      "id": 68,
+      "name": "Machamp",
+      "name_hk": "怪力",
+      "tier": 2
+    },
+    {
+      "id": 69,
+      "name": "Bellsprout",
+      "name_hk": "喇叭芽",
+      "tier": 4
+    },
+    {
+      "id": 70,
+      "name": "Weepinbell",
+      "name_hk": "口呆花",
+      "tier": 4
+    },
+    {
+      "id": 71,
+      "name": "Victreebel",
+      "name_hk": "大食花",
+      "tier": 2
+    },
+    {
+      "id": 72,
+      "name": "Tentacool",
+      "name_hk": "大眼水母",
+      "tier": 5
+    },
+    {
+      "id": 73,
+      "name": "Tentacruel",
+      "name_hk": "多腳水母",
+      "tier": 3
+    },
+    {
+      "id": 74,
+      "name": "Geodude",
+      "name_hk": "小拳石",
+      "tier": 5
+    },
+    {
+      "id": 75,
+      "name": "Graveler",
+      "name_hk": "滾動石",
+      "tier": 4
+    },
+    {
+      "id": 76,
+      "name": "Golem",
+      "name_hk": "滾動岩",
+      "tier": 2
+    },
+    {
+      "id": 77,
+      "name": "Ponyta",
+      "name_hk": "小火馬",
+      "tier": 4
+    },
+    {
+      "id": 78,
+      "name": "Rapidash",
+      "name_hk": "烈焰馬",
+      "tier": 2
+    },
+    {
+      "id": 79,
+      "name": "Slowpoke",
+      "name_hk": "小呆獸",
+      "tier": 4
+    },
+    {
+      "id": 80,
+      "name": "Slowbro",
+      "name_hk": "大呆獸",
+      "tier": 2
+    },
+    {
+      "id": 81,
+      "name": "Magnemite",
+      "name_hk": "小磁怪",
+      "tier": 5
+    },
+    {
+      "id": 82,
+      "name": "Magneton",
+      "name_hk": "三合一磁怪",
+      "tier": 3
+    },
+    {
+      "id": 83,
+      "name": "Farfetch'd",
+      "name_hk": "火蔥鴨",
+      "tier": 4
+    },
+    {
+      "id": 84,
+      "name": "Doduo",
+      "name_hk": "多多",
+      "tier": 5
+    },
+    {
+      "id": 85,
+      "name": "Dodrio",
+      "name_hk": "多多利",
+      "tier": 3
+    },
+    {
+      "id": 86,
+      "name": "Seel",
+      "name_hk": "小海獅",
+      "tier": 4
+    },
+    {
+      "id": 87,
+      "name": "Dewgong",
+      "name_hk": "白海獅",
+      "tier": 2
+    },
+    {
+      "id": 88,
+      "name": "Grimer",
+      "name_hk": "爛泥怪",
+      "tier": 4
+    },
+    {
+      "id": 89,
+      "name": "Muk",
+      "name_hk": "爛泥獸",
+      "tier": 2
+    },
+    {
+      "id": 90,
+      "name": "Shellder",
+      "name_hk": "貝殼怪",
+      "tier": 5
+    },
+    {
+      "id": 91,
+      "name": "Cloyster",
+      "name_hk": "鐵甲貝",
+      "tier": 2
+    },
+    {
+      "id": 92,
+      "name": "Gastly",
+      "name_hk": "鬼斯",
+      "tier": 5
+    },
+    {
+      "id": 93,
+      "name": "Haunter",
+      "name_hk": "鬼斯通",
+      "tier": 4
+    },
+    {
+      "id": 94,
+      "name": "Gengar",
+      "name_hk": "耿鬼",
+      "tier": 2
+    },
+    {
+      "id": 95,
+      "name": "Onix",
+      "name_hk": "大岩蛇",
+      "tier": 5
+    },
+    {
+      "id": 96,
+      "name": "Drowzee",
+      "name_hk": "食夢獸",
+      "tier": 4
+    },
+    {
+      "id": 97,
+      "name": "Hypno",
+      "name_hk": "催眠獸",
+      "tier": 2
+    },
+    {
+      "id": 98,
+      "name": "Krabby",
+      "name_hk": "大鉗蟹",
+      "tier": 6
+    },
+    {
+      "id": 99,
+      "name": "Kingler",
+      "name_hk": "巨鉗蟹",
+      "tier": 3
+    },
+    {
+      "id": 100,
+      "name": "Voltorb",
+      "name_hk": "霹靂彈",
+      "tier": 5
+    },
+    {
+      "id": 101,
+      "name": "Electrode",
+      "name_hk": "雷霆彈",
+      "tier": 4
+    },
+    {
+      "id": 102,
+      "name": "Exeggcute",
+      "name_hk": "蛋蛋",
+      "tier": 4
+    },
+    {
+      "id": 103,
+      "name": "Exeggutor",
+      "name_hk": "椰樹獸",
+      "tier": 1
+    },
+    {
+      "id": 104,
+      "name": "Cubone",
+      "name_hk": "卡拉卡拉",
+      "tier": 4
+    },
+    {
+      "id": 105,
+      "name": "Marowak",
+      "name_hk": "格拉格拉",
+      "tier": 4
+    },
+    {
+      "id": 106,
+      "name": "Hitmonlee",
+      "name_hk": "沙古拉",
+      "tier": 4
+    },
+    {
+      "id": 107,
+      "name": "Hitmonchan",
+      "name_hk": "比華拉",
+      "tier": 4
+    },
+    {
+      "id": 108,
+      "name": "Lickitung",
+      "name_hk": "大舌頭",
+      "tier": 4
+    },
+    {
+      "id": 109,
+      "name": "Koffing",
+      "name_hk": "毒氣丸",
+      "tier": 4
+    },
+    {
+      "id": 110,
+      "name": "Weezing",
+      "name_hk": "毒氣雙子",
+      "tier": 2
+    },
+    {
+      "id": 111,
+      "name": "Rhyhorn",
+      "name_hk": "鐵甲犀牛",
+      "tier": 4
+    },
+    {
+      "id": 112,
+      "name": "Rhydon",
+      "name_hk": "鐵甲暴龍",
+      "tier": 2
+    },
+    {
+      "id": 113,
+      "name": "Chansey",
+      "name_hk": "吉利蛋",
+      "tier": 4
+    },
+    {
+      "id": 114,
+      "name": "Tangela",
+      "name_hk": "長藤怪",
+      "tier": 4
+    },
+    {
+      "id": 115,
+      "name": "Kangaskhan",
+      "name_hk": "袋獸",
+      "tier": 0
+    },
+    {
+      "id": 116,
+      "name": "Horsea",
+      "name_hk": "噴墨海馬",
+      "tier": 5
+    },
+    {
+      "id": 117,
+      "name": "Seadra",
+      "name_hk": "飛刺海馬",
+      "tier": 4
+    },
+    {
+      "id": 118,
+      "name": "Goldeen",
+      "name_hk": "獨角金魚",
+      "tier": 6
+    },
+    {
+      "id": 119,
+      "name": "Seaking",
+      "name_hk": "金魚王",
+      "tier": 3
+    },
+    {
+      "id": 120,
+      "name": "Staryu",
+      "name_hk": "海星星",
+      "tier": 6
+    },
+    {
+      "id": 121,
+      "name": "Starmie",
+      "name_hk": "寶石海星",
+      "tier": 3
+    },
+    {
+      "id": 122,
+      "name": "Mr. Mime",
+      "name_hk": "吸盤小丑",
+      "tier": 0
+    },
+    {
+      "id": 123,
+      "name": "Scyther",
+      "name_hk": "飛天螳螂",
+      "tier": 3
+    },
+    {
+      "id": 124,
+      "name": "Jynx",
+      "name_hk": "紅唇娃",
+      "tier": 4
+    },
+    {
+      "id": 125,
+      "name": "Electabuzz",
+      "name_hk": "電擊獸",
+      "tier": 3
+    },
+    {
+      "id": 126,
+      "name": "Magmar",
+      "name_hk": "鴨嘴火龍",
+      "tier": 3
+    },
+    {
+      "id": 127,
+      "name": "Pinsir",
+      "name_hk": "鉗刀甲蟲",
+      "tier": 3
+    },
+    {
+      "id": 128,
+      "name": "Tauros",
+      "name_hk": "大隻牛",
+      "tier": 0
+    },
+    {
+      "id": 129,
+      "name": "Magikarp",
+      "name_hk": "鯉魚王",
+      "tier": 6
+    },
+    {
+      "id": 130,
+      "name": "Gyarados",
+      "name_hk": "鯉魚龍",
+      "tier": 1
+    },
+    {
+      "id": 131,
+      "name": "Lapras",
+      "name_hk": "背背龍",
+      "tier": 1
+    },
+    {
+      "id": 132,
+      "name": "Ditto",
+      "name_hk": "百變怪",
+      "tier": 0
+    },
+    {
+      "id": 133,
+      "name": "Eevee",
+      "name_hk": "伊貝",
+      "tier": 4
+    },
+    {
+      "id": 134,
+      "name": "Vaporeon",
+      "name_hk": "水伊貝",
+      "tier": 1
+    },
+    {
+      "id": 135,
+      "name": "Jolteon",
+      "name_hk": "雷伊貝",
+      "tier": 2
+    },
+    {
+      "id": 136,
+      "name": "Flareon",
+      "name_hk": "火伊貝",
+      "tier": 2
+    },
+    {
+      "id": 137,
+      "name": "Porygon",
+      "name_hk": "立方獸",
+      "tier": 4
+    },
+    {
+      "id": 138,
+      "name": "Omanyte",
+      "name_hk": "菊石獸",
+      "tier": 4
+    },
+    {
+      "id": 139,
+      "name": "Omastar",
+      "name_hk": "多刺菊石獸",
+      "tier": 2
+    },
+    {
+      "id": 140,
+      "name": "Kabuto",
+      "name_hk": "萬年蟲",
+      "tier": 4
+    },
+    {
+      "id": 141,
+      "name": "Kabutops",
+      "name_hk": "鐮刀蟲",
+      "tier": 2
+    },
+    {
+      "id": 142,
+      "name": "Aerodactyl",
+      "name_hk": "化石飛龍",
+      "tier": 3
+    },
+    {
+      "id": 143,
+      "name": "Snorlax",
+      "name_hk": "卡比獸",
+      "tier": 1
+    },
+    {
+      "id": 144,
+      "name": "Articuno",
+      "name_hk": "急凍鳥",
+      "tier": 0
+    },
+    {
+      "id": 145,
+      "name": "Zapdos",
+      "name_hk": "雷鳥",
+      "tier": 0
+    },
+    {
+      "id": 146,
+      "name": "Moltres",
+      "name_hk": "火鳥",
+      "tier": 0
+    },
+    {
+      "id": 147,
+      "name": "Dratini",
+      "name_hk": "迷你龍",
+      "tier": 4
+    },
+    {
+      "id": 148,
+      "name": "Dragonair",
+      "name_hk": "哈古龍",
+      "tier": 3
+    },
+    {
+      "id": 149,
+      "name": "Dragonite",
+      "name_hk": "啟暴龍",
+      "tier": 1
+    },
+    {
+      "id": 150,
+      "name": "Mewtwo",
+      "name_hk": "超夢夢",
+      "tier": 0
+    },
+    {
+      "id": 151,
+      "name": "Mew",
+      "name_hk": "夢夢",
+      "tier": 0
+    }
+  ]
+}
