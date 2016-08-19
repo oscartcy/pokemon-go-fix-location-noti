@@ -133,7 +133,7 @@ function handleHeartbeatError(err) {
                 console.error('Refresh token error: ' + err);
             } else {
                 console.log('Refresh token complete');
-                console.log('token: ' + pokeio.playerInfo.accessToken);
+                // console.log('token: ' + pokeio.playerInfo.accessToken);
             }
 
             isHandlingError = false;
