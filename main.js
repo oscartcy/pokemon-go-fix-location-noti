@@ -23,7 +23,7 @@ if(notification_providers && notification_providers.pushbullet && notification_p
 
 var pokeio = new PokemonGO.Pokeio();
 
-var coords = {
+var userLocation = {
     'latitude': +config.latitude,
     'longitude': +config.longitude,
     'altitude': 0
@@ -31,15 +31,19 @@ var coords = {
 
 var location = {
     type: 'coords',
-    coords: coords
+    coords: userLocation
 };
+
+var radiusInLatLon = 0.0002;
+if(config.radius)
+    radiusInLatLon = config.radius;
 
 var coordDiff = [
     [0, 0],
-    [0.000300, 0],
-    [-0.000300, 0],
-    [0, 0.000300],
-    [0, -0.000300],
+    [radiusInLatLon, 0],
+    [-radiusInLatLon, 0],
+    [0, radiusInLatLon],
+    [0, -radiusInLatLon],
 ];
 
 var spawnMap = {};
@@ -207,8 +211,8 @@ function handleHeartbeatCell(cell) {
 
 function walkToNextLocation() {
     var newCoords = {
-        'latitude': coords.latitude + coordDiff[0][0],
-        'longitude': coords.longitude + coordDiff[0][1],
+        'latitude': userLocation.latitude + coordDiff[0][0],
+        'longitude': userLocation.longitude + coordDiff[0][1],
         'altitude': 0
     };
 
@@ -249,7 +253,15 @@ function publishNotification(params) {
     var tier = pokemon_tier.pokemon[parseInt(params.pokemonId) - 1].tier;
     var tier_displayname = pokemon_tier.tier_displayname[tier];
 
-    var title = tier_displayname + ' ' + lureFlag + pokemonData.name_hk + ' ' + pokemonData.name + ' ' + msToMMSS(params.timeTillHiddenMs);
+    var distance = parseInt(getDistanceFromLatLonInM({
+        latitude: params.latitude,
+        longitude: params.longitude
+    }, {
+        latitude: userLocation.latitude,
+        longitude: userLocation.longitude
+    }));
+
+    var title = tier_displayname + ' ' + lureFlag + pokemonData.name_hk + ' ' + pokemonData.name + ' ' + msToMMSS(params.timeTillHiddenMs) + ' ' + distance + 'm';
     var body = getGoogleMapLink(params.latitude, params.longitude);
 
     // TODO: support multiple providers
@@ -322,4 +334,27 @@ function recycleSpawnMap() {
 
 function msToMMSS(ms) {
     return new Date(ms).toTimeString().substring(3, 8);
+}
+
+function getDistanceFromLatLonInM(coord1, coord2) {
+    var lat1 = coord1.latitude;
+    var lon1 = coord1.longitude;
+    var lat2 = coord2.latitude;
+    var lon2 = coord2.longitude;
+
+    var R = 6371; // Radius of the earth in km
+    var dLat = deg2rad(lat2-lat1);  // deg2rad below
+    var dLon = deg2rad(lon2-lon1); 
+    var a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2)
+        ; 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c; // Distance in km
+    return d * 1000;    // Distance in m
+}
+
+function deg2rad(deg) {
+    return deg * (Math.PI/180)
 }
