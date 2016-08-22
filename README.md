@@ -4,7 +4,7 @@ Leisure project for tracking fixed location pokemons, best suit for Pokemon trai
 ## Features
 * Support searching pokemons nearby (so you can stay at home and Catch 'Em All)
 * Support pokemons from lure module
-* Support pushbullet and hipchat integration
+* Support pushbullet, hipchat and telegram integration
 * Support notification by pokemon tier
 * Support Hong Kong version pokemon names
 
@@ -25,7 +25,7 @@ notification_providers | { "provider_name": "options" }
 ### Pushbullet
 Create a [Pushbullet account](https://www.pushbullet.com)
 
-provider_name: pushbullet
+provider_name: `pushbullet`
 
 options:
 
@@ -35,7 +35,7 @@ token | Get one from Pushbullet [Account Settings](https://www.pushbullet.com/#s
 deviceParams | Your pushbullet account email address, or target patameters defined [here](https://docs.pushbullet.com/#create-push)
 
 ### Hipchat
-provider_name: hipchat
+provider_name: `hipchat`
 
 options:
 
@@ -44,6 +44,17 @@ Field | Description
 token | Obtain Hipchat [personal access token](https://www.hipchat.com/account/api)
 roomid | your room id, can be found on the path when you enter the room
 endpoint | Hipchat endpoint
+
+### Telegram
+provider_name: `telegram`
+
+option:
+
+Field | Description
+--- | ---
+token | Token of Telegram Bot. Create your own bot by talking with @BotFather ([guide](https://core.telegram.org/bots#6-botfather))
+chatid | Obtain chatid of your account from `https://api.telegram.org/bot<token>/getUpdates` after sending first message to the bot
+
 
 Install required dependencies:
 ```

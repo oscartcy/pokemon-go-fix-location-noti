@@ -16,6 +16,10 @@
 			"token": "your token",
 			"roomid": "room ID",
 			"endpoint": "https://somewhat.hipchat.com"
-		}
+		},
+    "telegram": {
+      "token": "bot token",
+      "chatid": "your chatid"
+    }
 	}
 }
