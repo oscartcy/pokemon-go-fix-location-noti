@@ -84,34 +84,46 @@ pokeio.init(username, password, location, provider, function(err) {
         console.log('1[i] Pokecoin: ' + poke);
         console.log('1[i] Stardust: ' + profile.currency[1].amount);
 
-        setInterval(function(){
-            if(isHandlingError) {
-                console.log('Handling error...');
-                return;
-            }
+        // setInterval(function(){
 
-            pokeio.Heartbeat(function(err,hb) {
-                if(err) {
-                    handleHeartbeatError(err);
-                    return;
-                }
+        // }, 5000);
 
-                if(!hb || !hb.cells) {
-                    return;
-                }
-
-                loginRetryCount = 0;
-
-                // digest each heartbeat cell
-                hb.cells.forEach(handleHeartbeatCell);
-
-                // move to next coord for searching
-                walkToNextLocation();
-            });
-        }, 5000);
+        (function loop() {
+            var rand = randomIntFromInterval(5000, 10000);
+            setTimeout(function() {
+                heartbeat();
+                loop();  
+            }, rand);
+        }());
 
     });
 });
+
+function heartbeat() {
+    if(isHandlingError) {
+        console.log('Handling error...');
+        return;
+    }
+
+    pokeio.Heartbeat(function(err,hb) {
+        if(err) {
+            handleHeartbeatError(err);
+            return;
+        }
+
+        if(!hb || !hb.cells) {
+            return;
+        }
+
+        loginRetryCount = 0;
+
+        // digest each heartbeat cell
+        hb.cells.forEach(handleHeartbeatCell);
+
+        // move to next coord for searching
+        walkToNextLocation();
+    });
+}
 
 function handleHeartbeatError(err) {
     console.error(err);
@@ -220,6 +232,7 @@ function walkToNextLocation() {
 
     pokeio.SetLocation(location, (err, coords) => {
         if(err) console.error(err);
+        // console.log(coords);
     });
 
     // rotate coordDiff
@@ -357,4 +370,8 @@ function getDistanceFromLatLonInM(coord1, coord2) {
 
 function deg2rad(deg) {
     return deg * (Math.PI/180)
+}
+
+function randomIntFromInterval(min,max){
+    return Math.floor(Math.random()*(max-min+1)+min);
 }
