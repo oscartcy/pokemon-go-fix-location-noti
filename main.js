@@ -7,6 +7,8 @@ var PushBullet = require('pushbullet');
 // var Long = require('long');
 var request = require('request');
 
+var TelegramBot = require('node-telegram-bot-api');
+
 var config = require('./config.json');
 
 if (!config.username) throw new Error('Missing config: username not found. ');
@@ -24,6 +26,12 @@ var notificationProviders = config.notification_providers;
 var pusher;
 if (notificationProviders && notificationProviders.pushbullet && notificationProviders.pushbullet.token) {
   pusher = new PushBullet(notificationProviders.pushbullet.token);
+}
+
+var telegramBot;
+if (notificationProviders && notificationProviders.telegram && notificationProviders.telegram.token) {
+  telegramBot = new TelegramBot(notificationProviders.telegram.token);
+  telegramBot.sendMessage(notificationProviders.telegram.chatid, 'Telegram Bot Started! ');
 }
 
 var pokeio = new PokemonGO.Pokeio();
@@ -318,6 +326,16 @@ function publishNotification(params) {
         console.error(err);
       }
     });
+  }
+
+  if (telegramBot) {
+    var msg = '';
+    msg += '[' + pokemonData.num + '] ' + pokemonData.name_hk + ' (' + pokemonData.name + ') ';
+    for (var i = 0; i < 7 - tier; i += 1)
+      msg += '⭐';
+    msg += '\nTime Remaining: ' + msToMMSS(params.timeTillHiddenMs);
+    telegramBot.sendMessage(notificationProviders.telegram.chatid, msg);
+    telegramBot.sendLocation(notificationProviders.telegram.chatid, params.latitude, params.longitude);
   }
 
   console.log((new Date()).toString());
