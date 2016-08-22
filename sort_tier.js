@@ -1,6 +1,6 @@
-var fs = require('fs');
+//var fs = require('fs');
 
-var pokemon_tier = require('./pokemon_tier.json');
+var pokemonTier = require('./pokemon_tier.json');
 
 var sortedTier = {
 	0: [],
@@ -10,9 +10,9 @@ var sortedTier = {
 	4: [],
 	5: [],
 	6: [],
-}
+};
 
-pokemon_tier.pokemon.forEach((pokemon) => {
+pokemonTier.pokemon.forEach((pokemon) => {
 	sortedTier[pokemon.tier].push(pokemon.name_hk);
 });
 
