@@ -11,8 +11,8 @@ gulp.task('nodemon', () => {
     script: 'main.js',
     ext: 'js',
     ignore: ['gulpfile.js'],
-    task: ['lint']
-  });
+    task: ['lint']});
+  // .on('crash', ['nodemon']);
 });
 
 gulp.task('lint', () => {

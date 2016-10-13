@@ -3,11 +3,11 @@
 var PokemonGO = require('pokemon-go-node-api');
 var pokedex = require('./pokedex_hk.json').pokemon;
 var pokemonTier = require('./pokemon_tier.json');
-var PushBullet = require('pushbullet');
 // var Long = require('long');
 var request = require('request');
 
-var TelegramBot = require('node-telegram-bot-api');
+var PushBullet = require('pushbullet');
+var Telegram = require('node-telegram-bot-api');
 
 var config = require('./config.json');
 
@@ -23,18 +23,18 @@ if (Array.isArray(config.do_not_notify)) {
 }
 
 var notificationProviders = config.notification_providers;
+
 var pusher;
 if (notificationProviders && notificationProviders.pushbullet && notificationProviders.pushbullet.token) {
   pusher = new PushBullet(notificationProviders.pushbullet.token);
 }
 
-var telegramBot;
+var telegramBot = null;
 if (notificationProviders && notificationProviders.telegram && notificationProviders.telegram.token) {
-  telegramBot = new TelegramBot(notificationProviders.telegram.token);
-  telegramBot.sendMessage(notificationProviders.telegram.chatid, 'Telegram Bot Started! ');
+  telegramInit();
 }
 
-var pokeio = new PokemonGO.Pokeio();
+// var pokeio = new PokemonGO.Pokeio();
 
 var coords = {
   'latitude': +config.latitude,
@@ -62,7 +62,7 @@ var recycleLength = 100;
 var lureStopMap = {};
 
 var isHandlingError = false;
-var loginRetryLimit = 1;
+var loginRetryLimit = 5;
 var loginRetryCount = 0;
 var sleepBeforeRefresh = 10000;
 
@@ -70,34 +70,29 @@ var username = config.username;
 var password = config.password;
 var provider = config.provider;
 
-pokeio.init(username, password, location, provider, function(err) {
-  if (err) {
-    throw err;
-  }
+// process.on('SIGINT', () => {
+//   console.log('Receive interrupt');
+// });
+
+pokeio.init(username, password, location, provider, (err) => {
+  if (err) throw err;
 
   // console.log('token: ' + pokeio.playerInfo.accessToken);
 
-  console.log('1[i] Current location: ' + pokeio.playerInfo.locationName);
-  console.log('1[i] lat/long/alt: : ' + pokeio.playerInfo.latitude + ' ' + pokeio.playerInfo.longitude + ' ' + pokeio.playerInfo.altitude);
+  console.log('Current location: ' + pokeio.playerInfo.locationName + '(' + pokeio.playerInfo.latitude + ' ' + pokeio.playerInfo.longitude + ' ' + pokeio.playerInfo.altitude + ')');
 
-  pokeio.GetProfile(function(err, profile) {
+  pokeio.GetProfile((err, profile) => {
     if (err) {
       throw err;
     }
 
     console.log('1[i] Username: ' + profile.username);
-    console.log('1[i] Poke Storage: ' + profile.poke_storage);
-    console.log('1[i] Item Storage: ' + profile.item_storage);
+    // console.log('1[i] Poke Storage: ' + profile.poke_storage);
+    // console.log('1[i] Item Storage: ' + profile.item_storage);
+    // console.log('1[i] Pokecoin: ' + profile.currency[0].amount ? profile.currency[0].amount : 0);
+    // console.log('1[i] Stardust: ' + profile.currency[1].amount);
 
-    var poke = 0;
-    if (profile.currency[0].amount) {
-      poke = profile.currency[0].amount;
-    }
-
-    console.log('1[i] Pokecoin: ' + poke);
-    console.log('1[i] Stardust: ' + profile.currency[1].amount);
-
-    setInterval(function(){
+    setInterval(() => {
       if (isHandlingError) {
         console.log('Handling error...');
         return;
@@ -122,7 +117,6 @@ pokeio.init(username, password, location, provider, function(err) {
         walkToNextLocation();
       });
     }, 5000);
-
   });
 });
 
@@ -360,4 +354,34 @@ function recycleSpawnMap() {
 
 function msToMMSS(ms) {
   return new Date(ms).toTimeString().substring(3, 8);
+}
+
+function telegramInit() {
+  telegramBot = new Telegram(notificationProviders.telegram.token, {polling: true});
+
+  telegramBot.sendMessage(notificationProviders.telegram.chatid, 'Telegram notification start. ', {
+    reply_markup: JSON.stringify({
+      'keyboard': [
+        [
+          {text: 'Set my location', request_location: true}
+          // {text: '/myid'}
+        ]
+      ],
+      'one_time_keyboard': true,
+      'force_reply': true
+  })});
+
+  telegramBot.onText(/\/myid(.*)/, function(msg) {
+    telegramBot.sendMessage(msg.from.id, 'Your chat id is: ' + msg.from.id);
+  });
+  // telegramBot.onText(/\/start(.*)/, function(msg) {
+  //   if (msg.from.id.toString() !== notificationProviders.telegram.chatid) {
+  //     telegramBot.sendMessage(msg.from.id, 'Not registered chatid. ');
+  //   } else {
+  //   }
+  // });
+  telegramBot.on('location', (msg) => {
+    var loc = msg.location;
+    console.log(loc);
+  });
 }
